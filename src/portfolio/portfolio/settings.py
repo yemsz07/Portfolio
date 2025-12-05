@@ -10,11 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+<<<<<<< HEAD
+=======
+import os
+>>>>>>> 6699726 (My First Portfolio)
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+<<<<<<< HEAD
 
+=======
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+>>>>>>> 6699726 (My First Portfolio)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -53,8 +61,18 @@ ROOT_URLCONF = 'portfolio.urls'
 
 TEMPLATES = [
     {
+<<<<<<< HEAD
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+=======
+        
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, '../templates'),
+            os.path.join(PROJECT_DIR, 'templates')
+        ],
+>>>>>>> 6699726 (My First Portfolio)
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,7 +143,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+<<<<<<< HEAD
 STATIC_URL = 'static/'
+=======
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(os.path.dirname(BASE_DIR), "assets", "static"),
+    os.path.join(os.path.dirname(BASE_DIR), "assets", "media"),
+]
+STATIC_DIR = os.path.join(os.path.dirname(BASE_DIR), "assets", "static")
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "assets", "static_cdn")
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "assets", "media")
+>>>>>>> 6699726 (My First Portfolio)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
