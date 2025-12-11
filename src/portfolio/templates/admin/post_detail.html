@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %} 
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            
+            <p class="text-muted">Posted by: {{ post.user.username }} on {{ post.created_at|date:"F j, Y" }}</p>
+
+            {% if post.image %}
+                <img src="{{ post.image.url }}" class="img-fluid mb-4" alt="{{ post.description|truncatechars:50 }}" style="max-height: 400px; object-fit: contain;">
+            {% endif %}
+
+            <hr>
+
+            <p>{{ post.description }}</p>
+
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-primary mt-3">Back to Dashboard</a>
+            
+            <a href="{% url 'edit_post' id=post.id %}" class="btn btn-warning mt-3">Edit This Post</a>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

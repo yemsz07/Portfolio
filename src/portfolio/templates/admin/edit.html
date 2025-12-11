@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+{% block head %}
+<style>
+    .current-thumb {
+        width: 150px;
+        height: 150px;
+        object-fit: scale-down;
+        border: 1px solid #ccc;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="layout-px-spacing">
+    <div class="page-header">
+        <div class="page-title">
+            <h3>Edit Post (ID: {{ post.id }})</h3>
+        </div>
+    </div>
+
+    <div class="row" id="cancel-row">
+        <div class="col-xl-8 col-lg-8 col-sm-12 layout-spacing">
+            <div class="widget-content widget-content-area br-6">
+                
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %} 
+                    
+                    <h4>Currently Uploaded File:</h4>
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" class="current-thumb" alt="Current Image">
+                    {% else %}
+                        <p>Walang larawang naka-upload.</p>
+                    {% endif %}
+
+                    {{ form.as_p }}
+                    
+                    <button type="submit" class="btn btn-primary mt-3">I-save ang Pagbabago</button>
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mt-3">Cancel</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

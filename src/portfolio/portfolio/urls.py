@@ -14,33 +14,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-<<<<<<< HEAD
+from .views import admin_dashboard, edit_post # 1. INAYOS: Binago ang 'edit_posts' sa 'edit_post'
 from django.contrib import admin
-=======
-"""from django.contrib import admin
->>>>>>> 6699726 (My First Portfolio)
-from django.urls import path
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-<<<<<<< HEAD
-]
-=======
-]"""
-
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
-from . import views
+from django.conf.urls.static import static
+from .views import post_detail
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    # Path para sa Admin Dashboard
+    path('admin_dashboard/', admin_dashboard, name="admin_dashboard"),
+    
+    path('<int:id>/', post_detail, name='post_detail'),
+    # KORAPSYON: Inayos ang ID capture sa <int:id> at pinalitan ang function name at URL name
+    path('posts/edit/<int:id>/', edit_post, name="edit_post"),
+    
+    path('admin/', admin.site.urls),
+    
+    # Tiyakin na ang 'posts.urls' ay umiiral at naglalaman ng 'post_detail'
+    path('', include('posts.urls')), 
 ]
 
+# Tiyakin na ito ay nasa pinakadulo ng file (at kung nasa development mode ka)
 if settings.DEBUG:
-    from django.conf.urls.static import static
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-    urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
->>>>>>> 6699726 (My First Portfolio)
+

@@ -1,0 +1,98 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+{% block head %}
+<style>
+    .thumb{
+        width:200px;
+        height:200px;
+        object-fit:scale-down;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="layout-px-spacing">
+                
+    <div class="page-header">
+        <div class="page-title">
+            <h3>Home</h3>
+        </div>
+    </div>
+
+    <div class="row" id="cancel-row">
+    
+        <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+            <div class="widget-content widget-content-area br-6">
+                <div class="table-responsive mb-4 mt-4">
+                    <table id="zero-config" class="table table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>User</th>                           
+                                <th>Description</th>
+                                <th>Start Date</th>
+                                <th>Update Date</th>                                                      
+                                <th class="no-content"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in posts %}
+                            <tr>
+                                <td>
+                                    <img src="{{ p.image.url }}" class="thumb" >
+                                </td>
+                                <td>
+                                    {{ p.user.username }}
+                                </td>
+                                <td>
+                                    {{ p.description }}
+                                </td>
+                                <td>
+                                    {{ p.created_at }}
+                                </td>
+                                <td>
+                                    {{ p.updated_at }}
+                                </td>
+                                <td>
+                                    <a href="/posts/edit/{{ p.id }}/">EDIT</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Image</th>
+                                <th>User</th>                           
+                                <th>Description</th>
+                                <th>Start Date</th>
+                                <th>Update Date</th>      
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
