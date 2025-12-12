@@ -44,6 +44,30 @@
                 font-size: 3.5rem;
             }
         }
+        
+        /* Custom styles for portfolio images */
+        .card-img-top {
+            width: 100%;
+            height: 250px; /* Fixed height for all images */
+            object-fit: cover; /* This will cover the area while maintaining aspect ratio */
+            object-position: center; /* Center the image within the element */
+        }
+        
+        .card {
+            height: 100%; /* Make all cards the same height */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-body {
+            flex: 1; /* Make card body take remaining space */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-text {
+            flex-grow: 1; /* Push the button group to the bottom */
+        }
     </style>
 
 
@@ -106,18 +130,14 @@
                     {% for p in posts %}
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
-                            <img src="{{ p.image.url }}" class="card-img-top" alt="...">
+                            <img src="{{ p.image.url }}" class="card-img-top" alt="{{ p.title|default:'Portfolio Image' }}">
 
                             <div class="card-body">
                                 <p class="card-text">
                                     {{ p.description }}
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    </div>
-                                    <small class="text-muted">Posted by:&nbsp;&nbsp;{{ p.user.username }} {{ p.created_at|date:"m/d/Y" }} {{ p.created_at|timesince }} ago </small>
+                                    <small class="text-muted">Posted by:&nbsp;&nbsp;{{ p.created_at|date:"m/d/Y" }} {{ p.created_at|timesince }} ago </small>
                                     
                                 </div>
                             </div>

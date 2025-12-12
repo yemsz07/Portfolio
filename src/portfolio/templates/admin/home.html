@@ -4,10 +4,16 @@
 
 {% block head %}
 <style>
+    /* Iyong CSS style para sa thumbnail */
     .thumb{
         width:200px;
         height:200px;
         object-fit:scale-down;
+    }
+    /* Idagdag natin ito para mas malinaw ang paghihiwalay */
+    .add-button-container {
+        padding: 20px;
+        text-align: right; /* Para nasa kanan ang button */
     }
 </style>
 {% endblock %}
@@ -15,7 +21,7 @@
 {% block content %}
 
 <div class="layout-px-spacing">
-                
+    
     <div class="page-header">
         <div class="page-title">
             <h3>Home</h3>
@@ -24,25 +30,28 @@
 
     <div class="row" id="cancel-row">
     
-        <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+        <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
             <div class="widget-content widget-content-area br-6">
+                
+                {# Iyong Table ng Posts #}
                 <div class="table-responsive mb-4 mt-4">
                     <table id="zero-config" class="table table-hover" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Image</th>
-                                <th>User</th>                           
+                                <th>User</th>
                                 <th>Description</th>
                                 <th>Start Date</th>
-                                <th>Update Date</th>                                                      
-                                <th class="no-content"></th>
+                                <th>Update Date</th>
+                                <th class="no-content">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for p in posts %}
                             <tr>
                                 <td>
-                                    <img src="{{ p.image.url }}" class="thumb" >
+                                    {# Tiyakin na gumagamit ka ng default image kung sakaling walang p.image #}
+                                    <img src="{{ p.image.url }}" class="thumb" alt="Post Image">
                                 </td>
                                 <td>
                                     {{ p.user.username }}
@@ -57,24 +66,24 @@
                                     {{ p.updated_at }}
                                 </td>
                                 <td>
-                                    <a href="/posts/edit/{{ p.id }}/">EDIT</a>
+                                    {# Mas maganda kung gagamit ka ng {% url %} tag dito #}
+                                    <a href="{% url 'edit_post' id=p.id %}">EDIT</a>
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Image</th>
-                                <th>User</th>                           
-                                <th>Description</th>
-                                <th>Start Date</th>
-                                <th>Update Date</th>      
-                                <th></th>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
+            </div> 
+            
+            {# 🚀 IDAGDAG ANG ADD BUTTON SA IBABA NG WIDGET #}
+            <div class="add-button-container">
+                {# Gagamitin natin ang URL name na 'add_post' na nilikha mo sa views.py #}
+                <a href="{% url 'add_post' %}" class="btn btn-primary btn-lg">
+                    ➕ ADD NEW ITEMS
+                </a>
             </div>
+            
         </div>
 
     </div>
@@ -83,16 +92,5 @@
 {% endblock %}
 
 {% block script %}
+{# Dito ilalagay ang JavaScript files #}
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-

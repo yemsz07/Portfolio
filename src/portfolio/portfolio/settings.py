@@ -9,36 +9,47 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+# =========================================================
+#  I. IMPORT SECTION
+# =========================================================
 import os
 from pathlib import Path
 
+# =========================================================
+#  II. PATH DEFINITION
+# =========================================================
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+# Ang PROJECT_DIR ay ang folder ng 'portfolio' (project settings/urls.py)
+# Ito ay ginagamit na ngayon ng BASE_DIR, kaya maaaring tanggalin ang PROJECT_DIR.
+# Ginagamit ang os.path.join para sa mas lumang style paths kung kinakailangan.
 
-# SECURITY WARNING: keep the secret key used in production secret!
+
+# =========================================================
+#  III. SECURITY & DEBUGGING
+# =========================================================
 SECRET_KEY = 'django-insecure-gs56q0bt(39xgv8@ya%63-cso!0houq)y)i-4lho+l7v!uj=rb'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
-# Application definition
+# =========================================================
+#  IV. APPLICATION DEFINITION
+# =========================================================
 
 INSTALLED_APPS = [
-    'posts',
-    'django.contrib.humanize',
+    # Django Admin at Built-in Apps (Mas maganda kung uunahin ito)
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize', # Para sa mas madaling basahin na numero (e.g., 1000 -> 1k)
+
+    # Iyong Custom Apps (Ang 'posts' app)
+    'posts', 
 ]
 
 MIDDLEWARE = [
@@ -53,18 +64,23 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'portfolio.urls'
 
+
+# =========================================================
+#  V. TEMPLATE CONFIGURATION (Inayos)
+# =========================================================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        
+        # Inayos ang DIRS: Dapat isang listahan lang ng paths ang DIRS.
+        # Ginagamit natin ang BASE_DIR / 'templates' para sa global templates.
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, '../templates'),
-            os.path.join(PROJECT_DIR, 'templates')
-        ],
+            BASE_DIR / 'templates',
+            # Maaaring tanggalin ang ibang os.path.join kung gumagamit ka ng pathlib
+        ], 
+        
+        'APP_DIRS': True, # KRITIKAL: Pinapahanap nito ang templates sa loob ng bawat app/templates folder (e.g., posts/templates)
 
-        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
@@ -78,15 +94,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+# =========================================================
+#  VI. DATABASE CONFIGURATION (PostgreSQL)
+# =========================================================
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "portfolio",
         "USER": "postgres",
-        "PASSWORD": "12345",
+        "PASSWORD": "12345", # Tiyakin na ito ay tama at private sa production!
         "HOST": "127.0.0.1",
         "PORT": "5432",
         "ATOMIC_REQUESTS": True,
@@ -96,13 +112,12 @@ DATABASES = {
             "client_encoding": "UTF8",
         },
     },
-
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
+# =========================================================
+#  VII. PASSWORD VALIDATION & AUTHENTICATION
+# =========================================================
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -118,34 +133,43 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Set the redirect URL after login/logout
+LOGIN_REDIRECT_URL = '/' # Idirekta sa home page pagkatapos mag-login
+LOGOUT_REDIRECT_URL = '/' # Idirekta sa home page pagkatapos mag-logout
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
+# =========================================================
+#  VIII. INTERNATIONALIZATION
+# =========================================================
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
+# =========================================================
+#  IX. STATIC AND MEDIA FILES (Tiyakin na tama ang paths)
+# =========================================================
+# NOTE: Ang paggamit ng os.path.join at os.path.dirname ay maayos, 
+# ngunit dapat mo ring tiyakin na tama ang structure ng iyong folders.
 
 STATIC_URL = '/static/'
 
+# STATICFILES_DIRS: Dito hahanapin ni Django ang karagdagang static files (e.g., global CSS/JS)
 STATICFILES_DIRS = [
-    os.path.join(os.path.dirname(BASE_DIR), "assets", "static"),
+    BASE_DIR / 'static', 
+    # Sa halip na mag-rely sa os.path.dirname(BASE_DIR) na posibleng maging malabo
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "assets", "static_cdn")
+# STATIC_ROOT: Dito kokopyahin ng 'collectstatic' ang LAHAT ng static files (para sa production)
+STATIC_ROOT = BASE_DIR / 'staticfiles_cdn' 
 
+# MEDIA FILES (Para sa mga uploads ng user, tulad ng iyong Post image)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "assets", "media")
+MEDIA_ROOT = BASE_DIR / 'media'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
+# =========================================================
+#  X. DEFAULT CONFIG
+# =========================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

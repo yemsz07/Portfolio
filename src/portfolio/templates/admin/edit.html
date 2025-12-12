@@ -33,13 +33,23 @@
                     {% if post.image %}
                         <img src="{{ post.image.url }}" class="current-thumb" alt="Current Image">
                     {% else %}
-                        <p>Walang larawang naka-upload.</p>
+                        <p>No image upload.</p>
                     {% endif %}
 
                     {{ form.as_p }}
                     
-                    <button type="submit" class="btn btn-primary mt-3">I-save ang Pagbabago</button>
-                    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mt-3">Cancel</a>
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> I-save ang Pagbabago
+                        </button>
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                        <a href="{% url 'delete_post' id=post.id %}" class="btn btn-danger ml-auto" 
+                           onclick="return confirm('Sigurado ka bang gusto mong i-delete ang post na ito?');">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
                 </form>
 
             </div>
