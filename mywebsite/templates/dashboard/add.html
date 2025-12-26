@@ -1,0 +1,116 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %} 
+
+{% block content %}
+<style>
+    /* 1. Main Container para sa Edit Form */
+    .form-card {
+        background-color: #121417; /* Dark theme base sa screenshot mo */
+        padding: 30px;
+        border-radius: 12px;
+        color: #ffffff;
+    }
+
+    /* 2. Square Preview Box */
+    .square-preview {
+        width: 100%;
+        max-width: 300px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid #2c3036;
+        margin-bottom: 20px;
+    }
+
+    /* 3. FIX SA CHOOSE FILE AT CURRENTLY LINK */
+    /* Pinapantay natin ang alignment sa ilalim ng image */
+    #div_id_image {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Pantay sa kaliwa */
+        width: 120%;
+        max-width: 300px; /* Para saktong sakto sa lapad ng preview */
+    }
+
+    /* Inaayos ang "Currently:" na link para hindi kalat */
+    #div_id_image a {
+        color: #0d6efd;
+        font-size: 0.85rem;
+        text-decoration: none;
+        word-break: break-all; /* Para hindi lumabas sa screen ang mahabang filename */
+        margin-bottom: 5px;
+    }
+
+    /* Styling para sa mismong Choose File button area */
+    input[type="file"] {
+        background: #1a1d21;
+        border: 1px solid #343a40;
+        border-radius: 5px;
+        padding: 5px;
+        color: #adb5bd;
+        width: 100%;
+    }
+
+    /* Tinatago ang label na "Image" kung gusto mo mas malinis, 
+       dahil may "Current Image Preview" na tayo sa taas */
+    #div_id_image label {
+        display: none;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="form-card shadow-lg">
+        <h2 class="mb-4 text-info">ADD POST</h2>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %} 
+
+            <div class="row">
+                <div class="col-md-5 d-flex flex-column align-items-center">
+                    <p class="text-secondary small w-100 text-start ms-4">NEW POST:</p>
+                    
+                    <img src="https://via.placeholder.com/300x200" id="preview-img" class="square-preview">
+                    
+
+                    <div class="px-2 w-100 d-flex justify-content-center">
+                        <div id="file-input-container">
+                            {{ form.image|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <label class="text-secondary small">Description</label>
+                    {{ form.description|as_crispy_field }}
+                    
+                    <div class="mt-4 d-flex justify-content-end gap-2">
+                        <button type="submit" class="btn btn-primary px-4">Create Post</button>
+                        <a href="{% url 'mywebsite:admin2_dashboard' %}" class="btn btn-purple px-4" style="background-color: #6f42c1; color: white;">CANCEL</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // 1. Hanapin natin ang 'input' field ng image. 
+    // Default ni Django na lagyan ng 'id_fieldname' (kaya id_image)
+    const imageInput = document.querySelector('#id_image');
+    
+    // 2. Hanapin natin yung <img> tag na paglalagyan ng preview
+    const previewImg = document.querySelector('#preview-img');
+
+    // 3. Sabihin natin: "Kapag may pinili si user na file (onchange)..."
+    if (imageInput) {
+        imageInput.onchange = evt => {
+            const [file] = imageInput.files;
+            if (file) {
+                // 4. Gumawa ng temporary link para sa piniling file at ipalit sa 'src' ng image
+                previewImg.src = URL.createObjectURL(file);
+            }
+        }
+    }
+</script>
+
+{% endblock %}

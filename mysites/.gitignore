@@ -1,0 +1,23 @@
+# Django Files
+db.sqlite3
+__pycache__/
+*.pyc
+staticfiles/
+media/
+
+# Virtual Environment
+venv/
+.env
+
+# Tailwind & Node (Napaka-importante!)
+theme/static_src/node_modules/
+node_modules/
+.npm/
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

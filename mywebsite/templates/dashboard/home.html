@@ -1,0 +1,71 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+
+{% block content %}
+
+
+
+    <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing">
+                
+                <div class="row layout-top-spacing">
+
+                    
+                
+                    <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                        <div class="widget-content widget-content-area br-6">
+                            <div class="table-responsive mb-4 mt-4">
+
+                                <h5>Admin Dashboard</h5>
+
+
+                                <div class="d-flex justify-content-end mb-3">
+                                    <a href="{% url 'mywebsite:add_myweb' %}" class="btn btn-primary btn-sm">Create Post</a>
+                                </div>
+                                
+
+                                <table id="zero-config" class="table table-hover" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Description</th>
+                                            <th>Image</th>
+                                            <th>Date</th>
+                                            <th class="no-content"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in mywebs %}
+                                        <tr>
+                                            <td>{{ item.user }}</td>
+                                            <td>{{ item.description }}</td>
+                                            <td>
+                                                {% if item.image %}
+                                                <img src="{{ item.image.url }}" class="img-fluid style="max-width: 50px;">
+                                                {% else %}
+                                                No image
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ item.pub_date|date:"Y-m-d" }}</td>
+                                            <td>
+                                                <a href="{% url 'mywebsite:edit_myweb' id=item.id %}">Edit</a>
+                                            </td>
+
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+{% endblock %}
