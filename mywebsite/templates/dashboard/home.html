@@ -4,9 +4,66 @@
 Home
 {% endblock %}
 
+{% block head %}
+<style>
+    /* Remove horizontal scrollbar and extend layout */
+    body, html {
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+    
+    .main-content {
+        width: 100% !important;
+        overflow-x: hidden !important;
+        margin: 0 auto !important;
+    }
+    
+    .layout-px-spacing {
+        padding: 0 20px !important;
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+    }
+    
+    .row.layout-top-spacing {
+        margin: 0 auto !important;
+        justify-content: center !important;
+    }
+    
+    .table-responsive {
+        overflow-x: visible !important;
+        width: 100% !important;
+    }
+    
+    .widget-content-area {
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }
+    
+    /* Ensure table fits within container */
+    #zero-config {
+        width: 100% !important;
+        table-layout: fixed !important;
+    }
+    
+    #zero-config th,
+    #zero-config td {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    
+    /* Adjust column widths */
+    #zero-config th:nth-child(1), #zero-config td:nth-child(1) { width: 80px; } /* Image */
+    #zero-config th:nth-child(2), #zero-config td:nth-child(2) { width: 120px; } /* User */
+    #zero-config th:nth-child(3), #zero-config td:nth-child(3) { width: auto; min-width: 200px; } /* Description */
+    #zero-config th:nth-child(4), #zero-config td:nth-child(4) { width: 120px; } /* Start Date */
+    #zero-config th:nth-child(5), #zero-config td:nth-child(5) { width: 120px; } /* Update Date */
+    #zero-config th:nth-child(6), #zero-config td:nth-child(6) { width: 100px; } /* Action */
+</style>
+{% endblock %}
 
 {% block content %}
-
 
 
     <!--  BEGIN CONTENT AREA  -->
@@ -25,37 +82,43 @@ Home
 
 
                                 <div class="d-flex justify-content-end mb-3">
-                                    <a href="{% url 'mywebsite:add_myweb' %}" class="btn btn-primary btn-sm">Create Post</a>
+                                    <a href="{% url 'mywebsite:add_myweb' %}" class="btn btn-success btn-sm">+ ADD NEW ITEMS</a>
                                 </div>
                                 
 
                                 <table id="zero-config" class="table table-hover" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>Image</th>
                                             <th>User</th>
                                             <th>Description</th>
-                                            <th>Image</th>
-                                            <th>Date</th>
-                                            <th class="no-content"></th>
+                                            <th>Start Date</th>
+                                            <th>Update Date</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for item in mywebs %}
                                         <tr>
-                                            <td>{{ item.user }}</td>
-                                            <td>{{ item.description }}</td>
                                             <td>
                                                 {% if item.image %}
-                                                <img src="{{ item.image.url }}" class="img-fluid style="max-width: 50px;">
+                                                <img src="{{ item.image.url }}" class="img-fluid" style="max-width: 50px; border-radius: 4px;">
                                                 {% else %}
-                                                No image
+                                                <div style="width: 50px; height: 50px; background-color: #444; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; border-radius: 4px;">No img</div>
                                                 {% endif %}
                                             </td>
+                                            <td>{{ item.user }}</td>
+                                            <td>{{ item.description }}</td>
                                             <td>{{ item.pub_date|date:"Y-m-d" }}</td>
+                                            <td>{{ item.updated_date|date:"Y-m-d"|default:item.pub_date|date:"Y-m-d" }}</td>
                                             <td>
-                                                <a href="{% url 'mywebsite:edit_myweb' id=item.id %}">Edit</a>
+                                                <a href="{% url 'mywebsite:edit_myweb' item.id %}" class="btn btn-sm btn-outline-primary">EDIT</a>
                                             </td>
-
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="6" style="text-align: center; padding: 20px;">No data available</td>
+                                        </tr>
                                         {% endfor %}
                                     </tbody>
                                     <tfoot>
@@ -65,6 +128,24 @@ Home
                         </div>
                     </div>
 
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
                 </div>
 
             </div>

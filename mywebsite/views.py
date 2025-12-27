@@ -5,20 +5,29 @@ from django.contrib.auth import logout
 from django.http import HttpResponse
 from .models import myweb
 from .forms import Webform
+from django.core.paginator import Paginator
 
 
 
 def index(request):
     mywebs = myweb.objects.all().order_by('-pub_date')
+    paginator = Paginator(mywebs, 6)  # Show 25 contacts per page.
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
+
+
     return render(request, 'index.html', {
         'title': 'Mywebsite',
-        'mywebs': mywebs,
+        'mywebs': page_obj,
     }
     )
 @login_required
 def admin2_dashboard(request):
     mywebs = myweb.objects.all().order_by('-pub_date')
-    return render(request, 'dashboard/home.html',{'mywebs': mywebs,})
+    paginator = Paginator(mywebs, 6)  # Show 25 contacts per page.
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'dashboard/home.html',{'mywebs': page_obj, 'page_obj': page_obj})
 
 
 @login_required
