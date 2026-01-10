@@ -5,10 +5,21 @@
 {% block head %}
 <style>
     /* Iyong CSS style para sa thumbnail */
-    .thumb{
-        width:200px;
-        height:200px;
-        object-fit:scale-down;
+    /* Style for the table cell containing the image */
+    #zero-config td:first-child {
+        vertical-align: middle !important;
+        text-align: center;
+        padding: 10px 0;
+    }
+    
+    /* Thumbnail image style */
+    .thumb {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+        display: inline-block;
+        vertical-align: middle;
     }
     /* Idagdag natin ito para mas malinaw ang paghihiwalay */
     .add-button-container {

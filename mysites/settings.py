@@ -37,15 +37,32 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.humanize',
+    'django.contrib.postgres',  # Dapat nasa itaas ito bago ang Wagtail apps
+    
+    # Wagtail apps
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail',
+    'modelcluster',
+    'taggit',
+    
+    # Iyong custom apps
     'mywebsite',
-    'crispy_forms',
-    'crispy_bootstrap5',
-    'tailwind',
-    'theme',
+    
+    # Django REST framework
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -134,7 +151,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mysites', 'media')
 
 
 STATICFILES_DIRS = [
@@ -152,3 +169,22 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 TAILWIND_APP_NAME = 'theme'
+
+
+REST_FRAMEWORK = {
+    # Sa ngayon, payagan muna nating makita ng lahat (Read Only) 
+    # o ng mga naka-login (Admin) ang API.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ]
+}
+
+WAGTAILSEARCH_BACKENDS = {
+    'default': {
+        'BACKEND': 'wagtail.contrib.postgres_search.backend',
+    }
+}
+
+
+WAGTAIL_SITE_NAME = 'My Website'
+WAGTAILADMIN_BASE_URL = 'http://localhost:7000'  # Pwede mong palitan ito base sa iyong setup
