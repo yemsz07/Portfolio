@@ -31,14 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.postgres',  # Dapat nasa itaas ito bago ang Wagtail apps
-    
+    'mywebsite',
+
     # Wagtail apps
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -53,16 +47,27 @@ INSTALLED_APPS = [
     'wagtail',
     'modelcluster',
     'taggit',
+
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.postgres',  # Dapat nasa itaas ito bago ang Wagtail apps
+    
+
     
     # Iyong custom apps
-    'mywebsite',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     
     # Django REST framework
     'rest_framework',
 ]
 
 MIDDLEWARE = [
-    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -70,6 +75,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'mysites.urls'
@@ -170,13 +177,20 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 TAILWIND_APP_NAME = 'theme'
 
+SPECTACULAR_SETTINGS = {
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+    # OTHER SETTINGS
+}
 
 REST_FRAMEWORK = {
     # Sa ngayon, payagan muna nating makita ng lahat (Read Only) 
     # o ng mga naka-login (Admin) ang API.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny'
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 WAGTAILSEARCH_BACKENDS = {
@@ -188,3 +202,7 @@ WAGTAILSEARCH_BACKENDS = {
 
 WAGTAIL_SITE_NAME = 'My Website'
 WAGTAILADMIN_BASE_URL = 'http://localhost:7000'  # Pwede mong palitan ito base sa iyong setup
+
+
+
+
