@@ -55,6 +55,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',  # Dapat nasa itaas ito bago ang Wagtail apps
+
+
+    'crispy_forms',
+    'crispy_bootstrap5',
     
 
     
@@ -202,7 +206,5 @@ WAGTAILSEARCH_BACKENDS = {
 
 WAGTAIL_SITE_NAME = 'My Website'
 WAGTAILADMIN_BASE_URL = 'http://localhost:7000'  # Pwede mong palitan ito base sa iyong setup
-
-
 
 

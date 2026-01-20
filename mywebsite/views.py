@@ -82,18 +82,19 @@ def myweb_detail(request, pk):
 #FBV
 
 
+from django.shortcuts import render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import myweb
+
+
 def index(request):
     mywebs = myweb.objects.all().order_by('-pub_date')
     paginator = Paginator(mywebs, 6)  # Show 25 contacts per page.
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
+    return render(request, 'index.html', {'mywebs': page_obj, 'page_obj': page_obj})
 
 
-    return render(request, 'index.html', {
-        'title': 'Mywebsite',
-        'mywebs': page_obj,
-    }
-    )
 @login_required
 def admin2_dashboard(request):
     mywebs = myweb.objects.all().order_by('-pub_date')
@@ -113,6 +114,7 @@ def add_myweb(request):
         return redirect('mywebsite:admin2_dashboard')
     return render(request, 'dashboard/add.html', {'form': form})
 
+
 @login_required
 def edit_myweb(request, id):
     myweb_instance = get_object_or_404(myweb, id=id)
@@ -126,7 +128,7 @@ def edit_myweb(request, id):
         form = Webform(instance=myweb_instance)
     
     return render(request, 'dashboard/edit.html', {'form': form, 'myweb': myweb_instance}) 
-    
+
 
 @login_required
 def delete_myweb(request, id):
